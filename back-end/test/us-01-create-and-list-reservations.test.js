@@ -322,12 +322,19 @@ describe("US-01 - Create and list reservations", () => {
         reservation_date: "2025-01-01",
         reservation_time: "17:30",
         people: "2",
+        
       };
+
+
+      console.log(typeof(data.people), data.people)
 
       const response = await request(app)
         .post("/reservations")
         .set("Accept", "application/json")
         .send({ data });
+
+
+        console.log("Response body:", response.body); 
 
       expect(response.body.error).toContain("people");
       expect(response.status).toBe(400);

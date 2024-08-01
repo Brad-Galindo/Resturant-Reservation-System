@@ -18,6 +18,57 @@ function asDateString(date) {
     .padStart(2, "0")}-${date.getDate().toString(10).padStart(2, "0")}`;
 }
 
+
+/**
+ * Checks if the given date is a Tuesday.
+ * @param dateString
+ *  a date string in YYYY-MM-DD format
+ * @returns {boolean}
+ *  true if the date is a Tuesday, false otherwise
+ */
+export function isTuesday(dateString) {
+  const date = new Date(dateString);
+  return date.getUTCDay() === 2; // 0 is Sunday, 1 is Monday, 2 Tuesday, etc.
+}
+
+
+/**
+ * Checks if the given date is in the past.
+ * @param dateString
+ *  a date string in YYYY-MM-DD format
+ * @returns {boolean}
+ *  true if the date is in the past, false otherwise
+ */
+export function isPast(dateTimeString) {
+  const now = new Date();
+  
+  // Parse the date string manually
+  const [datePart, timePart] = dateTimeString.split('T');
+  const [year, month, day] = datePart.split('-').map(Number);
+  const [hour, minute] = timePart ? timePart.split(':').map(Number) : [0, 0];
+  
+  // Create a date object in local time
+  const dateToCheck = new Date(year, month - 1, day, hour, minute);
+
+  console.log('Input string:', dateTimeString);
+  console.log('Now (Local):', now.toString());
+  console.log('Date to check (Local):', dateToCheck.toString());
+  console.log('Is past?', dateToCheck <= now);
+  
+  return dateToCheck <= now;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Format a date string in ISO-8601 format (which is what is returned from PostgreSQL) as YYYY-MM-DD.
  * @param dateString

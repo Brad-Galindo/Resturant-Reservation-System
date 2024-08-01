@@ -340,14 +340,17 @@ describe("US-08 - Change an existing reservation", () => {
         mobile_number: "800-555-1212",
         reservation_date: "2025-01-01",
         reservation_time: "17:30",
-        people: "2",
+        people:"2",
       };
-
+    
       const response = await request(app)
         .put("/reservations/1")
         .set("Accept", "application/json")
         .send({ data });
-
+    
+      console.log("Response body:", response.body);
+      console.log("Response status:", response.status);
+    
       expect(response.body.error).toContain("people");
       expect(response.status).toBe(400);
     });
