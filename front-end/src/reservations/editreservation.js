@@ -5,11 +5,17 @@ import { readReservation, updateReservation } from '../utils/api';
 import ErrorAlert from '../layout/ErrorAlert';
 
 function EditReservation() {
+
+  // State for form data and error handling
   const [formData, setFormData] = useState(null);
   const [error, setError] = useState(null);
+
+  // Get reservation_id from URL params and history object for navigation
   const { reservation_id } = useParams();
   const history = useHistory();
 
+
+  // Effect hook to load reservation data when component mounts
   useEffect(() => {
     const loadReservation = async () => {
       try {
@@ -22,6 +28,8 @@ function EditReservation() {
     loadReservation();
   }, [reservation_id]);
 
+
+  // Handler for form input changes
   const changeHandler = (event) => {
     setFormData({
       ...formData,
@@ -29,7 +37,8 @@ function EditReservation() {
     });
   };
 
-const submitHandler = async (event) => {
+  // Handler for form submission
+  const submitHandler = async (event) => {
   event.preventDefault();
   console.log("Submitting form data:", formData);
   try {

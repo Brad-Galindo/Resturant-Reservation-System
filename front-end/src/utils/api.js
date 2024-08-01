@@ -14,6 +14,11 @@ const API_BASE_URL =
 const headers = new Headers();
 headers.append("Content-Type", "application/json");
 
+
+
+
+
+
 /**
  * Fetch `json` from the specified URL and handle error status codes and ignore `AbortError`s
  *
@@ -52,11 +57,28 @@ async function fetchJson(url, options, onCancel) {
   }
 }
 
+
+/**
+ * Reads a single reservation by ID
+ * @param {number} reservation_id - The ID of the reservation to read
+ * @param {AbortSignal} signal - AbortController signal
+ * @returns {Promise<Object>} - A promise that resolves to the reservation data
+ */
+
 export async function readReservation(reservation_id, signal) {
   const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}`);
   return await fetchJson(url, { headers, signal }, []);
 }
 
+
+
+/**
+ * Updates a table with a reservation for seating
+ * @param {number} table_id - The ID of the table to update
+ * @param {number} reservation_id - The ID of the reservation to seat
+ * @param {AbortSignal} signal - AbortController signal
+ * @returns {Promise<Object>} - A promise that resolves to the updated table data
+ */
 
 export async function updateTableForSeating(table_id, reservation_id, signal) {
   const url = `${API_BASE_URL}/tables/${table_id}/seat`;
@@ -70,12 +92,15 @@ export async function updateTableForSeating(table_id, reservation_id, signal) {
   return data;
 }
 
+
+
 /**
  * Creates a new reservation
  * @param reservation
  * @returns {Promise<[reservation]>}
  *  a promise that resolves to the newly created reservation.
  */
+
 export async function createReservation(reservation, signal) {
   const url = `${API_BASE_URL}/reservations`;
   const options = {
@@ -90,6 +115,14 @@ export async function createReservation(reservation, signal) {
 }
 
 
+
+/**
+ * Creates a new table
+ * @param {Object} table - The table data to create
+ * @param {AbortSignal} signal - AbortController signal
+ * @returns {Promise<Object>} - A promise that resolves to the created table data
+ */
+
 export async function createTable(table, signal) {
   const url = `${API_BASE_URL}/tables`;
   const options = {
@@ -101,6 +134,8 @@ export async function createTable(table, signal) {
   let data = await fetchJson(url, options);
   return data;
 }
+
+
 
 /**
  * Assigns a reservation to a table (seats a reservation)
@@ -119,6 +154,16 @@ export async function seatReservation(tableId, reservationId, signal) {
   };
   return await fetchJson(url, options);
 }
+
+
+
+
+/**
+* Changes the status of a reservation
+* @param {numberd} - The ID of the reservation to update
+* @param {string} status - The new status for the reservation
+* @returns {Promise<Object>} - A promise that resolves to the updated reservation data
+*/
 
 export async function changeReservationStatus(reservation_id, status) {
   console.log(`Changing status for reservation ${reservation_id} to ${status}`);
@@ -142,6 +187,7 @@ export async function changeReservationStatus(reservation_id, status) {
     throw error;
   }
 }
+
 
 
 /**
@@ -187,11 +233,26 @@ export async function listReservations(params, signal) {
 
 
 
+/**
+ * Lists all tables
+ * @param {AbortSignal} signal - AbortController signal
+ * @returns {Promise<Array>} - A promise that resolves to an array of table data
+ */
+
 export async function listTables(signal) {
   const url = new URL(`${API_BASE_URL}/tables`);
   return await fetchJson(url, { headers, signal }, []);
 }
 
+
+
+
+/**
+ * Assigns a reservation to a table
+ * @param {number} tableId - The ID of the table to assign
+ * @param {number} reservationId - The ID of the reservation to assign
+ * @returns {Promise<Object>} - A promise that resolves to the updated table data
+ */
 
 export async function assignTable(tableId, reservationId) {
   const url = `${API_BASE_URL}/tables/${tableId}/seat`;
@@ -216,6 +277,15 @@ export async function assignTable(tableId, reservationId) {
   
   return await response.json();
 }
+
+
+
+
+/**
+ * Marks a table as finished and removes the reservation
+ * @param {number} tableId - The ID of the table to finish
+ * @returns {Promise<Object>} - A promise that resolves to the updated table data
+ */
 
 export async function finishTable(tableId) {
   const url = `${API_BASE_URL}/tables/${tableId}/seat`;
@@ -247,15 +317,13 @@ export async function updateReservation(reservationId, updatedReservation, signa
 }
 
 
-
-// ... (keep all your existing imports and functions)
-
 /**
  * Cancels a reservation by changing its status to "cancelled"
  * @param {number} reservationId - The ID of the reservation to cancel
  * @param {AbortSignal} signal - AbortController signal
  * @returns {Promise<Object>} - A promise that resolves to the updated reservation data
  */
+
 export async function cancelReservation(reservationId) {
   console.log(`Cancelling reservation ${reservationId}`);
   const url = `${API_BASE_URL}/reservations/${reservationId}/status`;

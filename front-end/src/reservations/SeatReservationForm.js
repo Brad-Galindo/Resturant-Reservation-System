@@ -1,23 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { assignTable } from "../utils/api"; // Assume you have an API utility
+import { assignTable } from "../utils/api";
 
 function SeatReservationForm({ tables }) {
+
   const history = useHistory();
+
+  // Get reservation_id from URL param
   const { reservation_id } = useParams();
+
+  // State for selected table ID and any error messages
   const [tableId, setTableId] = useState("");
   const [error, setError] = useState(null);
 
+  // Effect to validate reservation_id on component mount
   useEffect(() => {
     if (!reservation_id || isNaN(Number(reservation_id))) {
       setError("Invalid reservation ID");
     }
   }, [reservation_id]);
 
+  // Handler for table selection change
   const handleChange = (event) => {
     setTableId(event.target.value);
   };
 
+  // Handler for form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!tableId) {
@@ -26,9 +34,7 @@ function SeatReservationForm({ tables }) {
     }
 
     try {
-
-
-          // Convert reservation_id to a number
+    // Convert reservation_id to a number
     const numericReservationId = Number(reservation_id);
     
     // Check if the conversion resulted in a valid number
@@ -36,6 +42,7 @@ function SeatReservationForm({ tables }) {
       throw new Error("Invalid reservation ID");
     }
 
+      // Call API to assign table
       await assignTable(tableId, numericReservationId);
       history.push("/");
     } catch (err) {

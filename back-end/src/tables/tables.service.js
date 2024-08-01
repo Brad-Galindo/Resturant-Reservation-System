@@ -1,5 +1,6 @@
 const knex = require("../db/connection");
 
+// Create a new table
 async function create(table) {
   try {
     const createdRecord = await knex("tables")
@@ -11,7 +12,7 @@ async function create(table) {
   }
 }
 
-
+// List all tables, ordered by name
 async function list() {
     try {
       return await knex("tables").select("*").orderBy("table_name", "asc");
@@ -20,6 +21,7 @@ async function list() {
     }
   }
 
+  // Retrieve a specific table by ID
   async function read(table_id) {
     try {
       return await knex("tables")
@@ -31,6 +33,7 @@ async function list() {
     }
   }
 
+  // Update a table's details
 async function update(updatedTable) {
   try {
     const updatedRecord = await knex("tables")
@@ -43,7 +46,7 @@ async function update(updatedTable) {
 }
 
 
-
+  // Retrieve a specific reservation by ID
 async function readReservation(reservation_id) {
   try {
     return await knex("reservations")
@@ -55,6 +58,7 @@ async function readReservation(reservation_id) {
   }
 }
 
+  // Delete a table by ID
 async function deleteTable(tableId) {
     try {
       return await knex("tables").where({ table_id: tableId }).del();
@@ -64,7 +68,7 @@ async function deleteTable(tableId) {
   }
 
 
-
+  // Update a table's reservation
   async function updateReservationStatus(reservationId, status) {
     try {
       const updated = await knex("reservations")
@@ -76,6 +80,7 @@ async function deleteTable(tableId) {
     }
   }
 
+  // Clear a table's reservation assignment
   async function clearTableAssignment(tableId) {
     try {
       const updated = await knex("tables")
@@ -87,6 +92,7 @@ async function deleteTable(tableId) {
     }
   }
 
+// Seat a reservation at a table
 async function seat(table_id, reservation_id) {
   try {
     await knex.transaction(async (trx) => {
@@ -111,7 +117,9 @@ async function seat(table_id, reservation_id) {
     });
 
     // Return the updated table
-    return await knex("tables").where({ table_id: table_id }).first();
+    return await knex("tables")
+      .where({ table_id: table_id })
+      .first();
   } catch (error) {
     throw new Error(`Error seating reservation: ${error.message}`);
   }

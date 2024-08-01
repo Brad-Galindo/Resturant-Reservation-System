@@ -348,9 +348,6 @@ describe("US-08 - Change an existing reservation", () => {
         .set("Accept", "application/json")
         .send({ data });
     
-      console.log("Response body:", response.body);
-      console.log("Response status:", response.status);
-    
       expect(response.body.error).toContain("people");
       expect(response.status).toBe(400);
     });

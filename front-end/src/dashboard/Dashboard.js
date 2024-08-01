@@ -14,8 +14,11 @@ function Dashboard() {
 
   const history = useHistory();
   const { search } = useLocation();
+
   const date = new URLSearchParams(search).get("date") || today();
 
+
+  // Function to load reservations and tables data
   const loadDashboard = useCallback(() => {
     const abortController = new AbortController();
     setReservationsError(null);
@@ -32,14 +35,20 @@ function Dashboard() {
     return () => abortController.abort();
   }, [date]);
 
+
+  // Load dashboard data when the component mounts or date changes
   useEffect(() => {
     loadDashboard();
   }, [loadDashboard]);
 
+
+  // Handle date change and update the URL
   function handleDateChange(newDate) {
     history.push(`/dashboard?date=${newDate}`);
   }
 
+
+  // Handle finishing a table
   const handleFinish = async (tableId) => {
     if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
       setIsLoading(true);
@@ -65,7 +74,7 @@ function Dashboard() {
       }
     }
   };
-
+  // Handle seating a reservation
   const handleSeat = async (reservationId) => {
     try {
       await changeReservationStatus(reservationId, "seated");
@@ -81,7 +90,7 @@ function Dashboard() {
       setReservationsError(error);
     }
   };
-
+  // Handle cancelling a reservation
   const handleCancel = async (reservationId) => {
     if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
       try {
@@ -90,7 +99,7 @@ function Dashboard() {
           prevReservations.map((reservation) =>
             reservation.reservation_id === reservationId
               ? { ...reservation, status: "cancelled" }
- : reservation
+              : reservation
           )
         );
         loadDashboard();
@@ -106,11 +115,14 @@ function Dashboard() {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
+
       <ErrorAlert error={reservationsError} />
       <ErrorAlert error={tablesError} />
       <button onClick={() => handleDateChange(previous(date))}>Previous</button>
       <button onClick={() => handleDateChange(today())}>Today</button>
       <button onClick={() => handleDateChange(next(date))}>Next</button>
+
+
 
       <h2>Reservations</h2>
       <ReservationList
@@ -128,7 +140,7 @@ function Dashboard() {
               {table.reservation_id ? ' Occupied' : ' Free'}
             </span>
             {table.reservation_id && (
- <button
+              <button
                 data-table-id-finish={table.table_id}
                 onClick={() => handleFinish(table.table_id)}
                 disabled={isLoading}

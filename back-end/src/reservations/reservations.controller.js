@@ -1,6 +1,7 @@
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const service = require("./reservations.service");
 
+// List reservations based on date or mobile number
 async function list(req, res) {
   const { date, mobile_number } = req.query;
 
@@ -21,7 +22,7 @@ async function list(req, res) {
   }
 }
 
-
+// Check if reservation exists
 async function reservationExists(req, res, next) {
   const { reservation_id } = req.params;
   const reservation = await service.read(reservation_id);
@@ -36,21 +37,22 @@ async function reservationExists(req, res, next) {
 }
 
 
-
+// Read a specific reservation
 async function read(req, res) {
   const { reservation_id } = req.params;
   const data = await service.read(reservation_id);
   res.json({ data });
 }
 
+// Create a new reservation
 async function create(req, res) {
   const newReservation = await service.create(req.body.data);
   res.status(201).json({ data: newReservation });
 }
 
+// Validate required fields
 function validateFields(req, res, next) {
   const { data = {} } = req.body;
-  console.log(data);
 
   const requiredFields = [
     "first_name",
@@ -72,23 +74,10 @@ function validateFields(req, res, next) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
+// Validate 'people' field is a positive number
 function peopleIsNumber(req, res, next) {
-
-  let { people } = req.body.data;
-
-  console.log("Received people value:", people, "Type:", typeof people);
-
-  if(typeof people !== 'number' || people <= 0){
+  const { people } = req.body.data;
+  if(typeof people === "string" || people <= 0){
     return next({ status: 400, message: `people must be a number` });
   }
 
@@ -96,20 +85,7 @@ function peopleIsNumber(req, res, next) {
   next();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Update a reservation
 async function update(req, res, next) {
   const { reservation_id } = req.params;
   const updatedReservation = {
@@ -129,21 +105,10 @@ async function update(req, res, next) {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Validate reservation date
 function validateDate(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
+
 
   const reservationDateTime = new Date(`${reservation_date}T${reservation_time}`);
 
@@ -163,7 +128,7 @@ function validateDate(req, res, next) {
 
 
 
-
+// Validate reservation time
 function validateTime(req, res, next) {
   const { reservation_time } = req.body.data;
   const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
@@ -173,16 +138,11 @@ function validateTime(req, res, next) {
   next();
 }
 
-
+// Validate reservation date and time
 function validateReservationDateTime(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
-  console.log("Validating datetime:", reservation_date, reservation_time);
-
   const reservationDateTime = new Date(`${reservation_date}T${reservation_time}`);
   const now = new Date();
-
-  console.log("Reservation datetime:", reservationDateTime);
-  console.log("Current datetime:", now);
 
   // Check if the reservation is in the future
   if (reservationDateTime < now) {
@@ -207,6 +167,7 @@ function validateReservationDateTime(req, res, next) {
   next();
 }
 
+// Validate reservation is not on Tuesday
 function validateNotTuesday(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
   const [year, month, day] = reservation_date.split('-').map(Number);
@@ -225,7 +186,7 @@ function validateNotTuesday(req, res, next) {
 }
 
 
-
+// Update reservation status
 async function updateStatus(req, res) {
   const { reservation_id } = req.params;
   const { status } = req.body.data;
@@ -234,7 +195,7 @@ async function updateStatus(req, res) {
 }
 
 
-
+// Validate status update
 function validateStatus(req, res, next) {
   const { status } = req.body.data;
   const validStatuses = ["booked", "seated", "finished", "cancelled"];
@@ -258,7 +219,7 @@ function validateStatus(req, res, next) {
 }
 
 
-
+// Load reservation data
 async function loadReservation(req, res, next) {
   const { reservation_id } = req.params;
   const reservation = await service.read(reservation_id);
@@ -269,12 +230,14 @@ async function loadReservation(req, res, next) {
   next();
 }
 
+// Finish action
 async function finish(req, res) {
   const { reservation_id } = req.params;
   const updatedReservation = await service.updateStatus(reservation_id, "finished");
   res.json({ data: updatedReservation });
 }
 
+// Validate finish 
 function validateFinish(req, res, next) {
   const { reservation } = res.locals;
   if (!reservation) {
@@ -289,7 +252,7 @@ function validateFinish(req, res, next) {
   next();
 }
 
-
+// Validate create status
 function validateCreateStatus(req, res, next) {
   const { status } = req.body.data;
   if (status && status !== "booked") {
@@ -301,6 +264,7 @@ function validateCreateStatus(req, res, next) {
   next();
 }
 
+// Search reservations by mobile number
 async function search(req, res) {
   const { mobile_number } = req.query;
   console.log("Controller received search for:", mobile_number);
@@ -312,33 +276,7 @@ async function search(req, res) {
   res.json({ data });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Cancel a reservation
 async function cancel(req, res, next) {
   const { reservation_id } = req.params;
   try {
@@ -362,14 +300,6 @@ async function cancel(req, res, next) {
     next(error);
   }
 }
-
-
-
-
-
-
-
-// Update the module exports
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [
@@ -382,9 +312,20 @@ module.exports = {
     validateCreateStatus,
     asyncErrorBoundary(create),
   ],
-  read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
-  finish: [asyncErrorBoundary(loadReservation), validateFinish, asyncErrorBoundary(finish)],
-  updateStatus: [asyncErrorBoundary(loadReservation), validateStatus, asyncErrorBoundary(updateStatus)],
+  read: [
+    asyncErrorBoundary(reservationExists),
+     asyncErrorBoundary(read)
+  ],
+  finish: [
+    asyncErrorBoundary(loadReservation),
+     validateFinish,
+      asyncErrorBoundary(finish)
+  ],
+  updateStatus: [
+    asyncErrorBoundary(loadReservation),
+     validateStatus,
+      asyncErrorBoundary(updateStatus)
+  ],
   search: asyncErrorBoundary(search),
   update: [
     asyncErrorBoundary(reservationExists),

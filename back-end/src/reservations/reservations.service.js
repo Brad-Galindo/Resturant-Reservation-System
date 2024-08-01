@@ -1,11 +1,13 @@
 const knex = require("../db/connection");
 
+// Retrieve all reservations, ordered by date
 function list() {
   return knex("reservations")
     .select("*")
     .orderBy("reservation_date");
 }
 
+// Fetch reservations for a specific date, excluding finished ones
 function listByDate(date) {
   return knex("reservations")
     .select("*")
@@ -14,6 +16,7 @@ function listByDate(date) {
     .orderBy("reservation_time");
 }
 
+// Search reservations by mobile number, ignoring formatting
 function search(mobile_number) {
   return knex("reservations")
     .whereRaw(
@@ -23,7 +26,7 @@ function search(mobile_number) {
     .orderBy("reservation_date");
 }
 
-
+// Create a new reservation
 function create(reservation) {
   return knex("reservations")
     .insert(reservation)
@@ -31,10 +34,12 @@ function create(reservation) {
     .then((createdRecords) => createdRecords[0]);
 }
 
+// Retrieve a specific reservation by ID
 function read(reservation_id) {
   return knex("reservations").where({ reservation_id: reservation_id }).first();
 }
 
+// Update the status of a reservation
 async function updateStatus(reservation_id, status) {
   const updatedReservation = await knex("reservations")
     .where({ reservation_id })
@@ -49,7 +54,7 @@ async function updateStatus(reservation_id, status) {
   return updatedReservation;
 }
 
-
+// Update a reservation's details
 async function update(updatedReservation) {
   const { reservation_id } = updatedReservation;
   const result = await knex("reservations")
@@ -59,14 +64,6 @@ async function update(updatedReservation) {
 
   return result[0];
 }
-
-
-
-
-
-
-
-
 
 module.exports = {
   list,

@@ -4,10 +4,14 @@ import ReservationList from "../dashboard/reservationList";
 import ErrorAlert from "../layout/ErrorAlert";
 
 function Search() {
+
+  // State management for search functionality
   const [mobileNumber, setMobileNumber] = useState("");
   const [reservations, setReservations] = useState([]);
   const [error, setError] = useState(null);
 
+
+  // Reservation search handler
   const handleSearch = async (event) => {
     event.preventDefault();
     const abortController = new AbortController();
@@ -29,6 +33,7 @@ function Search() {
     return () => abortController.abort();
   };
 
+// Reservation cancellation handler
 const cancelHandler = async (reservationId) => {
   console.log("Reservation ID to cancel:", reservationId);
   if (

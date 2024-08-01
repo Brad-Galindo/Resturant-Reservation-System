@@ -7,18 +7,24 @@ import { isTuesday, isPast, formatAsDate } from "../utils/date-time";
 
 function NewReservation() {
   const history = useHistory();
+
+  // Initial state for the reservation form
   const initialFormState = {
     first_name: "",
     last_name: "",
     mobile_number: "",
     reservation_date: "",
     reservation_time: "",
-    people: "1",
+    people: 1,
     status: "booked",
   };
+
+  // State for form data and error handling
   const [formData, setFormData] = useState({ ...initialFormState });
   const [errorAlert, setErrorAlert] = useState(null);
 
+
+  // Handler for form input changes
   const changeHandler = ({ target }) => {
     setFormData((currentFormData) => ({
       ...currentFormData,
@@ -26,6 +32,8 @@ function NewReservation() {
     }));
   };
 
+
+  // Handler for form submission
   const submitHandler = async (event) => {
     event.preventDefault();
     const abortController = new AbortController();

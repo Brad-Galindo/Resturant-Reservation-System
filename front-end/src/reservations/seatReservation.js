@@ -10,18 +10,24 @@ import ErrorAlert from "../layout/ErrorAlert";
 import SeatReservationForm from "./SeatReservationForm.js";
 
 function SeatReservation() {
+
+  // Extract reservation_id from URL parameters
   const { reservation_id } = useParams();
   const history = useHistory();
+
+  // State variables
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState(null);
   const [formData, setFormData] = useState({});
   const [reservation, setReservation] = useState({});
   const [reservationError, setReservationError] = useState(null);
 
+  // Handler for form input changes
   const changeHandler = ({ target }) => {
     setFormData({ ...formData, [target.name]: target.value });
   };
 
+  // Handler for form submission
   const submitHandler = async (event) => {
     event.preventDefault();
     try {
@@ -37,6 +43,7 @@ function SeatReservation() {
     }
   };
 
+  // Effect hook to load tables
   useEffect(() => {
     const loadTables = async () => {
       const abortController = new AbortController();
@@ -57,6 +64,7 @@ function SeatReservation() {
     loadTables();
   }, []);
 
+  // Effect hook to load reservation details
   useEffect(() => {
     const loadReservation = async () => {
       const abortController = new AbortController();
@@ -104,6 +112,8 @@ function SeatReservation() {
     );
   };
 
+
+  // Try-catch block for rendering to handle any unexpected errors
   try {
     return renderContent();
   } catch (error) {

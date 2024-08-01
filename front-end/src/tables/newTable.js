@@ -5,10 +5,13 @@ import ErrorAlert from "../layout/ErrorAlert";
 
 function NewTable() {
     const history = useHistory();
+
+    // State for form inputs and error handling
     const [tableName, setTableName] = useState('');
     const [capacity, setCapacity] = useState('');
     const [error, setError] = useState(null);
   
+    // Table submission handler
     const handleSubmit = async (event) => {
       event.preventDefault();
       setError(null);
@@ -20,6 +23,7 @@ function NewTable() {
       }
   
       try {
+        // Create new table and redirect to dashboard
         await createTable({ 
           table_name: tableName, 
           capacity: Number(capacity) 
@@ -30,17 +34,10 @@ function NewTable() {
       }
     };
 
-  const handleTableNameChange = (event) => {
-    setTableName(event.target.value);
-  };
-
-  const handleCapacityChange = (event) => {
-    setCapacity(event.target.value);
-  };
-
-  const handleCancel = () => {
-    history.goBack();
-  };
+    // Input change handlers
+  const handleTableNameChange = (event) => {setTableName(event.target.value);};
+  const handleCapacityChange = (event) => {setCapacity(event.target.value);};
+  const handleCancel = () => {history.goBack();};
 
   return (
     <main>
