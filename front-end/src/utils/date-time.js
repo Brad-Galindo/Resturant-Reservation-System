@@ -64,15 +64,6 @@ export function isPast(dateTimeString) {
 
 
 
-// Test the function
-const testDate = '2024-08-02T14:00';
-console.log(isPast(testDate));
-
-
-
-
-
-
 
 
 

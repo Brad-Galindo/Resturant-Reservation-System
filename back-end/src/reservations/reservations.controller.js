@@ -122,7 +122,7 @@ function validateDate(req, res, next) {
   const [hour, minute] = reservation_time.split(':').map(Number);
   
   // Create a date object in local time
-  const reservationDateTime = new Date(year, month - 1, day, hour, minute);
+  const reservationDateTime = new Date(Date.UTC(year, month - 1, day, hour, minute));
   
   console.log('Parsed reservationDateTime:', reservationDateTime);
 
@@ -135,7 +135,7 @@ function validateDate(req, res, next) {
   console.log('Current time (now):', now);
   console.log('Is reservation in future?', reservationDateTime > now);
   
-  if (reservationDateTime <= now) {
+  if (reservationDateTime < now) {
     return next({ status: 400, message: "Reservation date and time must be in the future." });
   }
 
