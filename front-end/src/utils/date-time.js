@@ -41,22 +41,35 @@ export function isTuesday(dateString) {
  */
 export function isPast(dateTimeString) {
   const now = new Date();
+  const userTimeZoneOffset = now.getTimezoneOffset() * 60000; // Convert minutes to milliseconds
 
   // Parse the date string manually
   const [datePart, timePart] = dateTimeString.split('T');
   const [year, month, day] = datePart.split('-').map(Number);
   const [hour, minute] = timePart ? timePart.split(':').map(Number) : [0, 0];
 
-  // Create a date object in UTC
+  // Create a date object in UTC based on the input (which is assumed to be in local time)
   const dateToCheck = new Date(Date.UTC(year, month - 1, day, hour, minute));
 
-  console.log('Input string:', dateTimeString);
-  console.log('Now (UTC):', now.toUTCString());
-  console.log('Date to check (UTC):', dateToCheck.toUTCString());
-  console.log('Is past?', dateToCheck < now);
+  // Adjust for the user's time zone
+  const localDateToCheck = new Date(dateToCheck.getTime() + userTimeZoneOffset);
 
-  return dateToCheck < now;
+  console.log('Input string:', dateTimeString);
+  console.log('Now (Local):', now.toString());
+  console.log('Date to check (Local):', localDateToCheck.toString());
+  console.log('Is past?', localDateToCheck < now);
+
+  return localDateToCheck < now;
 }
+
+// Test the function
+const testDate = '2024-08-02T14:00';
+console.log(isPast(testDate));
+
+
+// Test the function
+const testDate = '2024-08-02T14:00';
+console.log(isPast(testDate));
 
 
 
