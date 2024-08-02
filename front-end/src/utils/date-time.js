@@ -42,8 +42,6 @@ export function isTuesday(dateString) {
 export function isPast(dateTimeString) {
   const now = new Date();
 
-  // Convert 'now' to UTC
-  const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() * 6000);
   
   // Parse the date string manually
   const [datePart, timePart] = dateTimeString.split('T');
@@ -55,7 +53,7 @@ export function isPast(dateTimeString) {
 
   console.log('Input string:', dateTimeString);
   console.log('Now (UTC):', now.toUTCString());
-  console.log('Date to check (Local):', dateToCheck.toUTCString());
+  console.log('Date to check (Local):', dateToCheck.toString());
   console.log('Is past?', dateToCheck <= now);
   
   return dateToCheck <= now;
