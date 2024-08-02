@@ -45,10 +45,15 @@ async function read(req, res) {
 }
 
 // Create a new reservation
-async function create(req, res) {
-  const newReservation = await service.create(req.body.data);
-  res.status(201).json({ data: newReservation });
+async function create(req, res, next) {
+  try {
+    const newReservation = await service.create(req.body.data);
+    res.status(201).json({ data: newReservation });
+  } catch (error) {
+   (error);
+  }
 }
+
 
 // Validate required fields
 function validateFields(req, res, next) {
@@ -188,15 +193,21 @@ function validateNotTuesday(req, res, next) {
 
 // Update reservation status
 async function updateStatus(req, res) {
+  try{
   const { reservation_id } = req.params;
   const { status } = req.body.data;
   const updatedReservation = await service.updateStatus(reservation_id, status);
   res.json({ data: updatedReservation });
+  }
+  catch (error) {
+    next(error);
+  }
 }
 
 
 // Validate status update
 function validateStatus(req, res, next) {
+  try{
   const { status } = req.body.data;
   const validStatuses = ["booked", "seated", "finished", "cancelled"];
 
@@ -217,10 +228,15 @@ function validateStatus(req, res, next) {
 
   next();
 }
+catch (error) {
+  next(error);
+}
+}
 
 
 // Load reservation data
 async function loadReservation(req, res, next) {
+  try{
   const { reservation_id } = req.params;
   const reservation = await service.read(reservation_id);
   if (!reservation) {
@@ -229,16 +245,26 @@ async function loadReservation(req, res, next) {
   res.locals.reservation = reservation;
   next();
 }
+catch (error) {
+  next(error);
+}
+}
 
 // Finish action
 async function finish(req, res) {
+  try{
   const { reservation_id } = req.params;
   const updatedReservation = await service.updateStatus(reservation_id, "finished");
   res.json({ data: updatedReservation });
+  }
+  catch (error) {
+    next(error);
+  }
 }
 
 // Validate finish 
 function validateFinish(req, res, next) {
+  try{
   const { reservation } = res.locals;
   if (!reservation) {
     return next({ status: 404, message: "Reservation not found." });
@@ -251,9 +277,14 @@ function validateFinish(req, res, next) {
   }
   next();
 }
+catch (error) {
+  next(error);
+}
+}
 
 // Validate create status
 function validateCreateStatus(req, res, next) {
+  try{
   const { status } = req.body.data;
   if (status && status !== "booked") {
     return next({
@@ -263,9 +294,14 @@ function validateCreateStatus(req, res, next) {
   }
   next();
 }
+catch (error) {
+  next(error);
+}
+}
 
 // Search reservations by mobile number
 async function search(req, res) {
+  try{
   const { mobile_number } = req.query;
   console.log("Controller received search for:", mobile_number);
   if (!mobile_number) {
@@ -274,6 +310,10 @@ async function search(req, res) {
   const data = await service.search(mobile_number);
   console.log("Controller sending response:", data);
   res.json({ data });
+}
+catch (error) {
+  next(error);
+}
 }
 
 // Cancel a reservation

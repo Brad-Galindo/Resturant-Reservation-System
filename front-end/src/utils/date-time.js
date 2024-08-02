@@ -48,11 +48,11 @@ export function isPast(dateTimeString) {
   const [hour, minute] = timePart ? timePart.split(':').map(Number) : [0, 0];
   
   // Create a date object in local time
-  const dateToCheck = new Date(year, month - 1, day, hour, minute);
+  const dateToCheck = new Date(Date.UTC(year, month - 1, day, hour, minute));
 
   console.log('Input string:', dateTimeString);
-  console.log('Now (Local):', now.toString());
-  console.log('Date to check (Local):', dateToCheck.toString());
+  console.log('Now (UTC):', now.toUTCString());
+  console.log('Date to check (Local):', dateToCheck.toUTCString());
   console.log('Is past?', dateToCheck <= now);
   
   return dateToCheck <= now;
