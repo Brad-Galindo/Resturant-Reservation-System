@@ -110,20 +110,14 @@ async function update(req, res, next) {
   }
 }
 
-// Validate reservation date
 function validateDate(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
 
   // Combine date and time into a single string
-  const dateTimeString = `${reservation_date}T${reservation_time}`;
+  const dateTimeString = `${reservation_date}T${reservation_time}:00.000Z`;
 
-  // Parse the date string manually
-  const [datePart, timePart] = dateTimeString.split('T');
-  const [year, month, day] = datePart.split('-').map(Number);
-  const [hour, minute] = timePart.split(':').map(Number);
-
-  // Create a date object in local time
-  const reservationDateTime = new Date(year, month - 1, day, hour, minute);
+  // Parse the date string as UTC
+  const reservationDateTime = new Date(dateTimeString);
 
   if (isNaN(reservationDateTime.getTime())) {
     return next({ status: 400, message: "Invalid reservation_date or reservation_time format." });
@@ -131,13 +125,21 @@ function validateDate(req, res, next) {
 
   const now = new Date();
 
-  if (reservationDateTime <= now) {
+  console.log('Input string:', dateTimeString);
+  console.log('Now (UTC):', now.toUTCString());
+  console.log('Reservation DateTime (UTC):', reservationDateTime.toUTCString());
+  console.log('Is past?', reservationDateTime < now);
+
+  if (reservationDateTime < now) {
     return next({ status: 400, message: "Reservation date and time must be in the future." });
   }
 
   res.locals.reservationDateTime = dateTimeString;
   next();
 }
+
+
+
 
 
 
