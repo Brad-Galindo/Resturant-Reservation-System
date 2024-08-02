@@ -43,7 +43,7 @@ export function isPast(dateTimeString) {
   const now = new Date();
 
   // Convert 'now' to UTC
-  const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() 6000);
+  const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() * 6000);
   
   // Parse the date string manually
   const [datePart, timePart] = dateTimeString.split('T');
