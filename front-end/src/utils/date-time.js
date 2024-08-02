@@ -62,9 +62,6 @@ export function isPast(dateTimeString) {
   return localDateToCheck < now;
 }
 
-// Test the function
-const testDate = '2024-08-02T14:00';
-console.log(isPast(testDate));
 
 
 // Test the function
