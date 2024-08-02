@@ -87,16 +87,35 @@ function peopleIsNumber(req, res, next) {
 // Validate reservation date and time
 function validateReservationDateTime(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
-  const reservationDateTime = new Date(`${reservation_date}T${reservation_time}:00`);
 
-  if (isNaN(reservationDateTime.getTime())) {
-    return next({ status: 400, message: "Invalid reservation_date or reservation_time format." });
+  // Validate date and time format
+  const reservationDate = new Date(reservation_date);
+  const [hours, minutes] = reservation_time.split(':').map(Number);
+
+  if (isNaN(reservationDate.getTime())) {
+    return next({
+      status: 400,
+      message: "Invalid reservation_date. It must be a valid date.",
+    });
   }
 
-  const now = new Date();
+  if (isNaN(hours) || isNaN(minutes)) {
+    return next({
+      status: 400,
+      message: "Invalid reservation_time. It must be a valid time.",
+    });
+  }
 
-  // Check if the reservation is in the future
-  if (reservationDateTime < now) {
+  const reservationDateTimeString = `${reservation_date}T${reservation_time}`;
+
+  // Check if the reservation is in the past
+  const now = new Date();
+  const [datePart, timePart] = reservationDateTimeString.split('T');
+  const [year, month, day] = datePart.split('-').map(Number);
+  const [hour, minute] = timePart ? timePart.split(':').map(Number) : [0, 0];
+  const dateToCheck = new Date(year, month - 1, day, hour, minute);
+
+  if (dateToCheck < now) {
     return next({
       status: 400,
       message: "Reservation must be in the future",
@@ -104,7 +123,6 @@ function validateReservationDateTime(req, res, next) {
   }
 
   // Check if the reservation is during business hours
-  const [hours, minutes] = reservation_time.split(':').map(Number);
   if (hours < 10 || (hours === 10 && minutes < 30) || hours > 21 || (hours === 21 && minutes > 30)) {
     return next({
       status: 400,
@@ -113,6 +131,7 @@ function validateReservationDateTime(req, res, next) {
   }
 
   // Check if the reservation is not on Tuesday
+  const reservationDateTime = new Date(reservationDateTimeString);
   if (reservationDateTime.getDay() === 2) { // 0 is Sunday, 1 is Monday, ..., 6 is Saturday
     return next({
       status: 400,
@@ -122,6 +141,10 @@ function validateReservationDateTime(req, res, next) {
 
   next();
 }
+
+module.exports = validateReservationDateTime;
+
+
 
 // Validate reservation time
 function validateTime(req, res, next) {
