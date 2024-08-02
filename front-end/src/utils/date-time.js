@@ -39,7 +39,7 @@ export function isTuesday(dateString) {
  * @returns {boolean}
  *  true if the date is in the past, false otherwise
  */
-function isPast(dateTimeString) {
+export function isPast(dateTimeString) {
   const now = new Date();
 
   // Parse the date string manually
