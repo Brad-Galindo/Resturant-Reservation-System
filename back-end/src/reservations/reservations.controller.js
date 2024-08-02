@@ -112,25 +112,26 @@ async function update(req, res, next) {
 
 // Validate reservation date
 function validateDate(req, res, next) {
-  const { reservation_date, reservation_time, time_zone } = req.body.data;
+  const { reservation_date, reservation_time } = req.body.data;
 
-  // Parse the reservation date and time with the provided time zone
-  const reservationDateTime = new Date(`${reservation_date}T${reservation_time}`);
+  console.log('Reservation Date:', reservation_date, 'Reservation Time:', reservation_time);
+
+  // Parse the reservation date and time in the local time zone
+  const reservationDateTime = new Date(`${reservation_date}T${reservation_time}:00`);
+
   if (isNaN(reservationDateTime.getTime())) {
     return next({ status: 400, message: "Invalid reservation_date or reservation_time format." });
   }
 
-  // Convert the reservationDateTime to the user's local time using the provided time zone
-  const reservationDateTimeInTimeZone = new Date(reservationDateTime.toLocaleString("en-US", { timeZone: time_zone }));
+  // Get the current time in the local time zone
+  const now = new Date();
 
-  // Convert the reservation time to UTC
-  const reservationDateTimeUTC = new Date(reservationDateTimeInTimeZone.toISOString());
+  console.log('Now:', now.toLocaleString());
+  console.log('Reservation DateTime:', reservationDateTime.toLocaleString());
+  console.log('Is future?', reservationDateTime > now);
 
-  // Get the current time in UTC
-  const nowUTC = new Date();
-
-  // Compare the reservation time in UTC with the current time in UTC
-  if (reservationDateTimeUTC > nowUTC) {
+  // Compare the reservation time with the current time
+  if (reservationDateTime > now) {
     return next();
   } else {
     return next({
@@ -139,6 +140,8 @@ function validateDate(req, res, next) {
     });
   }
 }
+
+
 
 
 
