@@ -115,7 +115,7 @@ function validateDate(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
 
   // Parse the reservation date and time in the local time zone and convert to UTC
-  const reservationDateTime = new Date(`${reservation_date}T${reservation_time}:00Z`); // Adding 'Z' to indicate UTC
+  const reservationDateTime = new Date(`${reservation_date}T${reservation_time}:00Z`);
 
   if (isNaN(reservationDateTime.getTime())) {
     return next({ status: 400, message: "Invalid reservation_date or reservation_time format." });
@@ -154,6 +154,22 @@ function validateTime(req, res, next) {
 // Validate reservation date and time
 function validateReservationDateTime(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
+  const reservationDateTime = new Date(`${reservation_date}T${reservation_time}:00Z`)
+
+  if (isNaN(reservationDateTime.getTime())) {
+    return next({ status: 400, message: "Invalid reservation_date or reservation_time format." });
+  }
+
+  const now = new Date();
+
+  // Check if the reservation is in the future
+  if (reservationDateTime < now) {
+    console.log("Past datetime detected");
+    return next({
+      status: 400,
+      message: "Reservation must be in the future",
+    });
+  }
 
   // Check if the reservation is during business hours
   const [hours, minutes] = reservation_time.split(':').map(Number);
