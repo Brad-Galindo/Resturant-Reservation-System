@@ -113,15 +113,20 @@ async function update(req, res, next) {
 // Validate reservation date
 function validateDate(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
-
-
-  const reservationDateTime = new Date(`${reservation_date}T${reservation_time}`);
+  
+  // Parse the date and time manually
+  const [year, month, day] = reservation_date.split('-').map(Number);
+  const [hour, minute] = reservation_time.split(':').map(Number);
+  
+  // Create a date object in local time
+  const reservationDateTime = new Date(year, month - 1, day, hour, minute);
 
   if (isNaN(reservationDateTime.getTime())) {
     return next({ status: 400, message: "Invalid reservation_date or reservation_time format." });
   }
 
   const now = new Date();
+  
   if (reservationDateTime <= now) {
     return next({ status: 400, message: "Reservation date and time must be in the future." });
   }
@@ -129,6 +134,7 @@ function validateDate(req, res, next) {
   res.locals.reservationDateTime = reservationDateTime;
   next();
 }
+
 
 
 
