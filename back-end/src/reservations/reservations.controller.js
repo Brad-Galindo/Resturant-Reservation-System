@@ -1,5 +1,6 @@
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const service = require("./reservations.service");
+const isPast = require("../../../front-end/src/utils/isPast");
 
 // List reservations based on date or mobile number
 async function list(req, res) {
@@ -109,13 +110,7 @@ function validateReservationDateTime(req, res, next) {
   const reservationDateTimeString = `${reservation_date}T${reservation_time}`;
 
   // Check if the reservation is in the past
-  const now = new Date();
-  const [datePart, timePart] = reservationDateTimeString.split('T');
-  const [year, month, day] = datePart.split('-').map(Number);
-  const [hour, minute] = timePart ? timePart.split(':').map(Number) : [0, 0];
-  const dateToCheck = new Date(year, month - 1, day, hour, minute);
-
-  if (dateToCheck < now) {
+  if (isPast(reservationDateTimeString)) {
     return next({
       status: 400,
       message: "Reservation must be in the future",
