@@ -41,7 +41,6 @@ export function isTuesday(dateString) {
  */
 export function isPast(dateTimeString) {
   const now = new Date();
-  const userTimeZoneOffset = now.getTimezoneOffset() * 60000; // Convert minutes to milliseconds
 
   // Parse the date string manually
   const [datePart, timePart] = dateTimeString.split('T');
@@ -52,7 +51,7 @@ export function isPast(dateTimeString) {
   const dateToCheck = new Date(Date.UTC(year, month - 1, day, hour, minute));
 
   // Adjust for the user's time zone
-  const localDateToCheck = new Date(dateToCheck.getTime() + userTimeZoneOffset);
+  const localDateToCheck = new Date(dateToCheck.getTime());
 
   console.log('Input string:', dateTimeString);
   console.log('Now (Local):', now.toString());
