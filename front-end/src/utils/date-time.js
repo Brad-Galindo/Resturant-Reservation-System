@@ -39,7 +39,7 @@ export function isTuesday(dateString) {
  * @returns {boolean}
  *  true if the date is in the past, false otherwise
  */
-export function isPast(dateTimeString) {
+function isPast(dateTimeString) {
   const now = new Date();
 
   // Parse the date string manually
@@ -47,19 +47,17 @@ export function isPast(dateTimeString) {
   const [year, month, day] = datePart.split('-').map(Number);
   const [hour, minute] = timePart ? timePart.split(':').map(Number) : [0, 0];
 
-  // Create a date object in UTC based on the input (which is assumed to be in local time)
-  const dateToCheck = new Date(Date.UTC(year, month - 1, day, hour, minute));
-
-  // Adjust for the user's time zone
-  const localDateToCheck = new Date(dateToCheck.getTime());
+  // Create a date object in local time
+  const dateToCheck = new Date(year, month - 1, day, hour, minute);
 
   console.log('Input string:', dateTimeString);
   console.log('Now (Local):', now.toString());
-  console.log('Date to check (Local):', localDateToCheck.toString());
-  console.log('Is past?', localDateToCheck < now);
+  console.log('Date to check (Local):', dateToCheck.toString());
+  console.log('Is past?', dateToCheck < now);
 
-  return localDateToCheck < now;
+  return dateToCheck < now;
 }
+
 
 
 
