@@ -121,8 +121,8 @@ function validateDate(req, res, next) {
   const [year, month, day] = reservation_date.split('-').map(Number);
   const [hour, minute] = reservation_time.split(':').map(Number);
   
-  // Create a date object in local time
-  const reservationDateTime = new Date(Date.UTC(year, month - 1, day, hour, minute));
+  // Create a date object in local time directly
+  const reservationDateTime = new Date(year, month - 1, day, hour, minute);
   
   console.log('Parsed reservationDateTime:', reservationDateTime);
 
@@ -142,6 +142,7 @@ function validateDate(req, res, next) {
   res.locals.reservationDateTime = reservationDateTime;
   next();
 }
+
 
 
 
