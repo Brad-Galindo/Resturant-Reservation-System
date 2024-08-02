@@ -110,37 +110,25 @@ async function update(req, res, next) {
   }
 }
 
+// Validate reservation date
 function validateDate(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
 
-  // Combine date and time into a single string
-  const dateTimeString = `${reservation_date}T${reservation_time}:00.000Z`;
 
-  // Parse the date string as UTC
-  const reservationDateTime = new Date(dateTimeString);
+  const reservationDateTime = new Date(`${reservation_date}T${reservation_time}`);
 
   if (isNaN(reservationDateTime.getTime())) {
     return next({ status: 400, message: "Invalid reservation_date or reservation_time format." });
   }
 
   const now = new Date();
-
-  console.log('Input string:', dateTimeString);
-  console.log('Now (UTC):', now.toUTCString());
-  console.log('Reservation DateTime (UTC):', reservationDateTime.toUTCString());
-  console.log('Is past?', reservationDateTime < now);
-
-  if (reservationDateTime < now) {
+  if (reservationDateTime <= now) {
     return next({ status: 400, message: "Reservation date and time must be in the future." });
   }
 
-  res.locals.reservationDateTime = dateTimeString;
+  res.locals.reservationDateTime = reservationDateTime;
   next();
 }
-
-
-
-
 
 
 
