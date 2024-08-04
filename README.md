@@ -3,8 +3,8 @@
 This full-stack application provides a comprehensive solution for restaurant reservation management. It allows restaurants to create, update, and delete reservations efficiently. The system also includes table management features, ensuring optimal seating arrangements and improved customer service.
 
 ## Live Demo
-- **Frontend:** Hosted at [Frontend](https://reservation-frontend-v0bx.onrender.com)
-- **Backend:** Hosted at [Backend](https://reservation-backend-63rq.onrender.com)
+- **Frontend:** Hosted at [Frontend](https://resturant-reservation-system-front-end.onrender.com)
+- **Backend:** Hosted at [Backend](https://resturant-reservation-system-back-end.onrender.com)
 
 *Note: Render spins down sites when not in use. You may need to visit the backend URL first to activate it, enabling the frontend to make API calls.*
 
