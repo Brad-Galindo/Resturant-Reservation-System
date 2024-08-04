@@ -90,7 +90,7 @@ function peopleIsNumber(req, res, next) {
   
   
   if (typeof people !== "number" || people <= 0) {
-    return next({ status: 400, message: `people must be a positive number` }, console.log(typeof people, people, "HERE"));
+    return next({ status: 400, message: `people must be a positive number` });
   }
   next();
 }
@@ -137,7 +137,7 @@ function validateReservationDateTime(req, res, next) {
 
   // Check if the reservation is not on Tuesday
   const reservationDateTime = new Date(reservationDateTimeString);
-  if (reservationDateTime.getDay() === 2) { // 0 is Sunday, 1 is Monday, ..., 6 is Saturday
+  if (reservationDateTime.getDay() === 2) { 
     return next({
       status: 400,
       message: "Reservations cannot be made on Tuesdays as the restaurant is closed.",

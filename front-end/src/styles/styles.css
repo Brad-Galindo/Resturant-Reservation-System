@@ -47,6 +47,7 @@ h1, h2, h4 {
 }
 
 .footer {
+  margin: auto;
   background-color: #1a1a1a !important;
   color: #f8c471;
   padding: 20px 0;

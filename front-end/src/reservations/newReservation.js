@@ -43,10 +43,6 @@ function NewReservation() {
     const formattedDate = formatAsDate(formData.reservation_date);
     const formattedDateTime = `${formattedDate}T${formData.reservation_time}`;
   
-    console.log('Formatted date:', formattedDate);
-    console.log('Is Tuesday:', isTuesday(formattedDate));
-    console.log('Is Past:', isPast(formattedDateTime));
-  
     // Check for Tuesday reservations
     if (isTuesday(formattedDate)) {
       setErrorAlert({ message: "Reservations cannot be made on Tuesdays as the restaurant is closed." });

@@ -174,7 +174,6 @@ export async function seatReservation(tableId, reservationId, signal) {
 */
 
 export async function changeReservationStatus(reservation_id, status) {
-  console.log(`Changing status for reservation ${reservation_id} to ${status}`);
   try {
     const response = await fetch(
       `${API_BASE_URL}/reservations/${reservation_id}/status`,
@@ -186,9 +185,7 @@ export async function changeReservationStatus(reservation_id, status) {
         body: JSON.stringify({ data: { status } }),
       }
     );
-    console.log("Response status:", response.status);
     const jsonResponse = await response.json();
-    console.log("Response body:", jsonResponse);
     return jsonResponse.data;
   } catch (error) {
     console.error("Error in changeReservationStatus:", error);
@@ -209,11 +206,9 @@ export async function listReservations(params, signal) {
   Object.entries(params).forEach(([key, value]) =>
     url.searchParams.append(key, value.toString())
   );
-  console.log("Fetching from URL:", url.toString());
 
   try {
     const data = await fetchJson(url, { headers, signal }, []);
-    console.log("Raw API response:", data);
 
     if (!Array.isArray(data)) {
       console.error("Expected an array of reservations, got:", data);
@@ -227,7 +222,6 @@ export async function listReservations(params, signal) {
         )
       : data;
 
-    console.log("Filtered data:", filteredData);
 
     return filteredData
       .map(formatReservationDate)
@@ -340,9 +334,7 @@ export async function updateReservation(reservationId, updatedReservation) {
  */
 
 export async function cancelReservation(reservationId) {
-  console.log(`Cancelling reservation ${reservationId}`);
   const url = `${API_BASE_URL}/reservations/${reservationId}/status`;
-  console.log('API URL:', url);
   
   const options = {
     method: "PUT",
@@ -351,16 +343,14 @@ export async function cancelReservation(reservationId) {
     },
     body: JSON.stringify({ data: { status: "cancelled" } }),
   };
-  console.log('API request options:', options);
+
 
   try {
     const response = await fetch(url, options);
-    console.log('API response status:', response.status);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const result = await response.json();
-    console.log('API response body:', result);
     return result.data;
   } catch (error) {
     console.error("Error in cancelReservation:", error);

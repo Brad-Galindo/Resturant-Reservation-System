@@ -49,9 +49,7 @@ function SeatReservation() {
       const abortController = new AbortController();
       setTablesError(null);
       try {
-        console.log("Starting to load tables...");
         const data = await listTables(abortController.signal);
-        console.log("Raw table data:", JSON.stringify(data));
         setTables(data);
       } catch (error) {
         setTablesError(() => {

@@ -1,5 +1,4 @@
 function isPast(dateTimeString) {
-  console.log("Checking date:", dateTimeString);
 
   // Get the current time in UTC
   const now = new Date();
@@ -12,9 +11,6 @@ function isPast(dateTimeString) {
   // Create a date object in local
   const dateToCheck = new Date(year, month - 1, day, hour, minute);
 
-  console.log('Input date:', dateToCheck.toLocaleString());
-  console.log('Current date:', now.toLocaleString());
-  console.log('Is past?', dateToCheck < now);
 
   return dateToCheck < now;
 }

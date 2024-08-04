@@ -15,13 +15,11 @@ function EditReservation() {
   useEffect(() => {
     const loadReservation = async () => {
       try {
-        console.log(`Fetching reservation with ID: ${reservation_id}`);
         const data = await readReservation(reservation_id);
-        console.log(data.reservation_date);
-        console.log("Fetched reservation data:", data);
+
 
         const formattedDate = formatAsDate(data.reservation_date);
-        console.log("Formatted date:", formattedDate);
+
 
         const [hours, minutes] = data.reservation_time.split(':');
         data.reservation_time = `${hours}:${minutes}`;
