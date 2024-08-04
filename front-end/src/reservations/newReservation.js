@@ -25,11 +25,12 @@ function NewReservation() {
 
 
   // Handler for form input changes
-  const changeHandler = ({ target }) => {
-    setFormData((currentFormData) => ({
-      ...currentFormData,
-      [target.name]: target.value,
-    }));
+  const changeHandler = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: name === "people" ? parseInt(value, 10) || "" : value,
+    });
   };
 
 
@@ -71,6 +72,7 @@ function NewReservation() {
 
   return (
     <div>
+      <div className="new-reservation main-content">
       <div>
         <h1>New Reservation</h1>
       </div>
@@ -81,6 +83,7 @@ function NewReservation() {
           changeHandler={changeHandler}
           submitHandler={submitHandler}
         />
+      </div>
       </div>
     </div>
   );

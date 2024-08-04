@@ -1,20 +1,16 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-function TableForm({
-  formData,
-  changeHandlerName,
-  changeHandlerCapacity,
-  submitHandler,
-}) {
+function TableForm({ formData, changeHandlerName, changeHandlerCapacity, submitHandler }) {
   const history = useHistory();
 
   return (
-    <div>
-      <form>
-        <label htmlFor="table_name">
-          Table Name:
-          <input className="form-control"
+    <div className="table-form">
+      <form onSubmit={submitHandler}>
+        <div className="form-group">
+          <label htmlFor="table_name">Table Name:</label>
+          <input
+            className="form-control"
             type="text"
             name="table_name"
             id="table_name"
@@ -22,11 +18,11 @@ function TableForm({
             onChange={changeHandlerName}
             required
           />
-        </label>
-        <br />
-        <label htmlFor="capacity">
-          Capacity Size:
-          <input className="form-control"
+        </div>
+        <div className="form-group">
+          <label htmlFor="capacity">Capacity Size:</label>
+          <input
+            className="form-control"
             type="number"
             name="capacity"
             id="capacity"
@@ -35,21 +31,19 @@ function TableForm({
             onChange={changeHandlerCapacity}
             required
           />
-        </label>
-        <br />
-        <button
-          className="btn btn-outline-danger btn-sm mr-1"
-          onClick={() => history.goBack()}
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          className="btn btn-outline-primary btn-sm"
-          onClick={(event) => submitHandler(event)}
-        >
-          Submit
-        </button>
+        </div>
+        <div className="form-group">
+          <button
+            type="button"
+            className="btn btn-outline-danger btn-sm mr-2"
+            onClick={() => history.goBack()}
+          >
+            Cancel
+          </button>
+          <button type="submit" className="btn btn-outline-primary btn-sm">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

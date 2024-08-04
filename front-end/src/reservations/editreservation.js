@@ -1,66 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import ReservationForm from './reservationForm'
+import ReservationForm from './reservationForm';
 import { readReservation, updateReservation } from '../utils/api';
+import { formatAsDate } from "../utils/date-time";
 import ErrorAlert from '../layout/ErrorAlert';
 
 function EditReservation() {
-
-  // State for form data and error handling
   const [formData, setFormData] = useState(null);
   const [error, setError] = useState(null);
 
-  // Get reservation_id from URL params and history object for navigation
   const { reservation_id } = useParams();
   const history = useHistory();
 
-
-  // Effect hook to load reservation data when component mounts
   useEffect(() => {
     const loadReservation = async () => {
       try {
+        console.log(`Fetching reservation with ID: ${reservation_id}`);
         const data = await readReservation(reservation_id);
-        setFormData(data);
+        console.log(data.reservation_date);
+        console.log("Fetched reservation data:", data);
+
+        const formattedDate = formatAsDate(data.reservation_date);
+        console.log("Formatted date:", formattedDate);
+
+        const [hours, minutes] = data.reservation_time.split(':');
+        data.reservation_time = `${hours}:${minutes}`;
+
+        setFormData({
+          ...data,
+          reservation_date: formattedDate,
+        });
       } catch (error) {
+        console.error("Error fetching reservation:", error);
         setError(error);
       }
     };
     loadReservation();
   }, [reservation_id]);
 
-
-  // Handler for form input changes
-  const changeHandler = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  // Handler for form submission
-  const submitHandler = async (event) => {
-  event.preventDefault();
-  console.log("Submitting form data:", formData);
-  try {
-    await updateReservation(reservation_id, formData);
-    console.log("Reservation updated successfully");
-    history.goBack();
-  } catch (error) {
-    console.error("Error updating reservation:", error);
-    setError(error);
-  }
+const changeHandler = (event) => {
+  const { name, value } = event.target;
+  setFormData({
+    ...formData,
+    [name]: name === "people" ? parseInt(value, 10) || "" : value,
+  });
 };
 
+
+  const submitHandler = async (event) => {
+    event.preventDefault();
+
+    try {
+      await updateReservation(reservation_id, formData);
+
+      // Redirecting to dashboard after update
+      history.push(`/dashboard?date=${formData.reservation_date.slice(0, 10)}`); 
+    } catch (error) {
+      console.error("Error updating reservation:", error);
+      setError(error);
+    }
+  };
 
   if (error) return <ErrorAlert error={error} />;
   if (!formData) return <div>Loading...</div>;
 
   return (
-    <ReservationForm
-      formData={formData}
-      changeHandler={changeHandler}
-      submitHandler={submitHandler}
-    />
+    <div>
+      <div className="new-reservation main-content">
+        <div>
+          <h1>Edit Reservation</h1>
+        </div>
+        <div>
+          <ReservationForm
+            formData={formData}
+            changeHandler={changeHandler}
+            submitHandler={submitHandler}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 

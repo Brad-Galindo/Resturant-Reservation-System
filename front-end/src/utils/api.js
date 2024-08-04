@@ -101,18 +101,26 @@ export async function updateTableForSeating(table_id, reservation_id, signal) {
  *  a promise that resolves to the newly created reservation.
  */
 
-export async function createReservation(reservation, signal) {
+export async function createReservation(reservation) {
   const url = `${API_BASE_URL}/reservations`;
   const options = {
     method: "POST",
     headers,
     body: JSON.stringify({ data: reservation }),
-    signal,
   };
-  return await fetchJson(url, options, {})
-    .then(formatReservationDate)
-    .then(formatReservationTime);
+
+  try {
+    const response = await fetchJson(url, options);
+    let formattedData = await formatReservationDate(response);
+    formattedData = await formatReservationTime(formattedData);
+    return formattedData;
+  } catch (error) {
+    console.error("Error in createReservation:", error);
+    throw error;
+  }
 }
+
+
 
 
 
@@ -303,18 +311,25 @@ export async function finishTable(tableId) {
  * @param {AbortSignal} signal - AbortController signal
  * @returns {Promise<Object>} - A promise that resolves to the updated reservation data
  */
-export async function updateReservation(reservationId, updatedReservation, signal) {
+export async function updateReservation(reservationId, updatedReservation) {
   const url = `${API_BASE_URL}/reservations/${reservationId}`;
   const options = {
     method: "PUT",
     headers,
-    body: JSON.stringify({ data: updatedReservation }), // Wrap updatedReservation in a data object
-    signal,
+    body: JSON.stringify({ data: updatedReservation }),
   };
-  return await fetchJson(url, options)
-    .then(formatReservationDate)
-    .then(formatReservationTime);
+
+  try {
+    const response = await fetchJson(url, options);
+    let formattedData = await formatReservationDate(response);
+    formattedData = await formatReservationTime(formattedData);
+    return formattedData;
+  } catch (error) {
+    console.error("Error in updateReservation:", error);
+    throw error;
+  }
 }
+
 
 
 /**

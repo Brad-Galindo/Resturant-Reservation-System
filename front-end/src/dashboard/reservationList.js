@@ -2,10 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function ListReservations({ reservations, cancelHandler }) {
-
   // Map through reservations to create table rows
   const display = reservations.map((reservation) => {
-
     // Only display reservations that are not finished or cancelled
     if (reservation.status !== "finished" && reservation.status !== "cancelled") {
       return (
@@ -33,13 +31,13 @@ function ListReservations({ reservations, cancelHandler }) {
                 </Link>
                 <Link
                   to={`/reservations/${reservation.reservation_id}/edit`}
-                 Name="btn btn-outline-primary mx-1"
+                  className="btn btn-outline-primary mx-1"
                 >
                   Edit
                 </Link>
                 <button
                   data-reservation-id-cancel={reservation.reservation_id}
-                  className="btn btn-danger"
+                  className="btn btn-danger mx-1"
                   type="button"
                   onClick={() => cancelHandler(reservation.reservation_id)}
                 >
@@ -57,7 +55,7 @@ function ListReservations({ reservations, cancelHandler }) {
                 </Link>
                 <button
                   data-reservation-id-cancel={reservation.reservation_id}
-                  className="btn btn-danger"
+                  className="btn btn-danger mx-1"
                   type="button"
                   onClick={() => cancelHandler(reservation.reservation_id)}
                 >
@@ -74,7 +72,7 @@ function ListReservations({ reservations, cancelHandler }) {
 
   // Render the table with reservation data
   return (
-    <div>
+    <div className="table-responsive">
       <table className="table table-striped table-bordered">
         <thead className="thead-dark">
           <tr>

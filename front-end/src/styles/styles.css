@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+body {
+  background: linear-gradient(135deg, #1a1a1a, #2c2c2c) no-repeat center center fixed;
+  color: #f8c471;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h4 {
+  font-family: 'Lora', serif;
+  color: #f8c471;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.navbar {
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  height: 100vh;
+  width: 300px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.navbar-brand, .nav-link {
+  color: #f8c471 !important;
+  font-family: 'Lora', serif;
+  transition: color 0.3s ease;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.nav-link:hover {
+  color: #d4af37 !important;
+  text-decoration: underline;
+}
+
+.main-content {
+  margin-left: 320px;
+  padding: 20px;
+  max-width: 1200px;
+  width: calc(100% - 340px);
+  transition: margin-left 0.3s ease;
+}
+
+.footer {
+  background-color: #1a1a1a !important;
+  color: #f8c471;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.btn {
+  background-color: #f8c471 !important;
+  border: none !important;
+  color: #1a1a1a !important;
+  font-family: 'Roboto', sans-serif;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.btn:hover {
+  background-color: #d4af37 !important;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(212, 175, 55, 0.5);
+}
+
+.table {
+  color: #f8c471 !important;
+  background-color: #1a1a1a !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border-radius: 0.5em !important;
+  overflow: hidden !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.table th, .table td {
+  border: 1px solid #f8c471 !important;
+  padding: 5px 10px;
+  text-align: center;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.table th {
+  font-family: 'Lora', serif !important;
+  font-weight: bold !important;
+  background-color: #2c2c2c !important;
+  color: #f8c471 !important;
+}
+
+.table td {
+  font-family: 'Roboto', sans-serif !important;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.form-control {
+  background-color: #2c2c2c !important;
+  color: #f8c471 !important;
+  border: 1px solid #f8c471 !important;
+  font-family: 'Roboto', sans-serif;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.form-control:focus {
+  background-color: #2c2c2c !important;
+  color: #f8c471 !important;
+  border-color: #d4af37 !important;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5) !important;
+}
+
+.reservation-form, .seat-reservation-form, .search-reservations, .new-reservation, .new-table, .table-form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #1a1a1a !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-form .form-group, .seat-reservation-form .form-group, .new-reservation .form-group, .new-table .form-group, .table-form .form-group {
+  margin-bottom: 15px;
+}
+
+.reservation-form label, .seat-reservation-form label, .search-form label, .new-table label, .table-form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #f8c471;
+  font-family: 'Lora', serif;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.search-form, .edit-reservation {
+  display: flex;
+  align-items: center;
+}
+
+.search-form input, .edit-reservation input, .new-reservation input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+@media (max-width: 992px) {
+  .navbar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 15px;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .btn {
+    margin: 2px !important;
+  }
+  
+  .btn-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .btn-secondary {
+    padding: 5px;
+    margin: 5px;
+  }
+
+  .btn-group .btn {
+    margin: 2px 2px !important;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+
+  .search-form, .edit-reservation, .new-reservation {
+    flex-direction: column;
+  }
+
+  .search-form input, .edit-reservation input, .new-reservation input {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  .table th, .table td {
+    padding: 5px 8px !important;
+  }
+  
+  .table th {
+    font-size: 0.8rem !important;
+  }
+
+  .table td {
+    font-size: 0.7rem !important;
+  }
+
+  .table thead {
+    font-size: 0.8rem !important;
+  }
+
+  .table tbody {
+    font-size: 0.7rem !important;
+  }
+}

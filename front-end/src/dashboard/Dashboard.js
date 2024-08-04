@@ -4,6 +4,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import ReservationList from "../dashboard/reservationList";
 import { useHistory, useLocation } from "react-router-dom";
 import { previous, next, today } from "../utils/date-time";
+import Footer from "../styles/Footer";
 
 function Dashboard() {
   const [reservations,setReservations] = useState([]);
@@ -109,51 +110,68 @@ function Dashboard() {
     }
   };
 
-  return (
-    <main>
-      <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
+    return (
+      <div>
+        <main className="container">
+          <h1>Dashboard</h1>
+          <div className="d-md-flex mb-3">
+            <h4 className="mb-0">Reservations for {date}</h4>
+          </div>
+          <ErrorAlert error={reservationsError} />
+          <ErrorAlert error={tablesError} />
+          <div className="btn-group mb-3" role="group" aria-label="Date navigation">
+            <button className="btn btn-secondary" onClick={() => handleDateChange(previous(date))}>Previous</button>
+            <button className="btn btn-secondary" onClick={() => handleDateChange(today())}>Today</button>
+            <button className="btn btn-secondary" onClick={() => handleDateChange(next(date))}>Next</button>
+          </div>
+          <h2>Reservations</h2>
+          <ReservationList
+            reservations={reservations}
+            onSeat={handleSeat}
+            cancelHandler={handleCancel}
+          />
+          <h2>Tables</h2>
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead className="thead-dark">
+                <tr>
+                  <th>Table Name</th>
+                  <th>Capacity</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tables
+                  .sort((a, b) => a.table_name.localeCompare(b.table_name))
+                  .map((table) => (
+                    <tr key={table.table_id}>
+                      <td>{table.table_name}</td>
+                      <td>{table.capacity}</td>
+                      <td data-table-id-status={table.table_id}>
+                        {table.reservation_id ? 'Occupied' : 'Free'}
+                      </td>
+                      <td>
+                        {table.reservation_id && (
+                          <button
+                            className="btn btn-sm btn-primary"
+                            data-table-id-finish={table.table_id}
+                            onClick={() => handleFinish(table.table_id)}
+                            disabled={isLoading}
+                          >
+                            {isLoading ? 'Finishing...' : 'Finish'}
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </main>
+        <Footer />
       </div>
-
-      <ErrorAlert error={reservationsError} />
-      <ErrorAlert error={tablesError} />
-      <button onClick={() => handleDateChange(previous(date))}>Previous</button>
-      <button onClick={() => handleDateChange(today())}>Today</button>
-      <button onClick={() => handleDateChange(next(date))}>Next</button>
-
-
-
-      <h2>Reservations</h2>
-      <ReservationList
-        reservations={reservations}
-        onSeat={handleSeat}
-        cancelHandler={handleCancel}
-      />
-
-      <h2>Tables</h2>
-      <ul>
-        {tables.sort((a, b) => a.table_name.localeCompare(b.table_name)).map((table) => (
-          <li key={table.table_id}>
-            {table.table_name} - Capacity: {table.capacity}
-            <span data-table-id-status={table.table_id}>
-              {table.reservation_id ? ' Occupied' : ' Free'}
-            </span>
-            {table.reservation_id && (
-              <button
-                data-table-id-finish={table.table_id}
-                onClick={() => handleFinish(table.table_id)}
-                disabled={isLoading}
-                aria-label={`Finish table ${table.table_name}`}
-              >
-                {isLoading ? 'Finishing...' : 'Finish'}
-              </button>
-            )}
-          </li>
-        ))}
-      </ul>
-    </main>
-  );
-}
+    );
+  }
 
 export default Dashboard;

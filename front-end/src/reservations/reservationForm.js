@@ -10,10 +10,10 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
   };
 
   return (
-    <div>
+    <div className="reservation-form">
       <form onSubmit={submitHandler}>
-        <label htmlFor="first_name">
-          First Name:
+        <div className="form-group">
+          <label htmlFor="first_name">First Name:</label>
           <input
             className="form-control"
             type="text"
@@ -23,10 +23,9 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
             onChange={changeHandler}
             required
           />
-        </label>
-        <br />
-        <label htmlFor="last_name">
-          Last Name:
+        </div>
+        <div className="form-group">
+          <label htmlFor="last_name">Last Name:</label>
           <input
             className="form-control"
             type="text"
@@ -36,10 +35,9 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
             onChange={changeHandler}
             required
           />
-        </label>
-        <br />
-        <label htmlFor="mobile_number">
-          Mobile Number:
+        </div>
+        <div className="form-group">
+          <label htmlFor="mobile_number">Mobile Number:</label>
           <input
             className="form-control"
             type="tel"
@@ -49,10 +47,9 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
             onChange={changeHandler}
             required
           />
-        </label>
-        <br />
-        <label htmlFor="reservation_date">
-          Reservation Date:
+        </div>
+        <div className="form-group">
+          <label htmlFor="reservation_date">Reservation Date:</label>
           <input
             className="form-control"
             type="date"
@@ -64,10 +61,9 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
             onChange={changeHandler}
             required
           />
-        </label>
-        <br />
-        <label htmlFor="reservation_time">
-          Reservation Time:
+        </div>
+        <div className="form-group">
+          <label htmlFor="reservation_time">Reservation Time:</label>
           <input
             className="form-control"
             type="time"
@@ -79,35 +75,33 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
             onChange={changeHandler}
             required
           />
-        </label>
-        <br />
-        <label htmlFor="people">
-          Party Size:
+        </div>
+        <div className="form-group">
+          <label htmlFor="people">Party Size:</label>
           <input
             className="form-control"
             type="number"
             name="people"
             id="people"
+            placeholder="Enter party Size"
             value={formData.people}
             onChange={changeHandler}
             required
             min="1"
           />
-        </label>
-        <br />
-        <button
-          type="button"
-          className="btn btn-outline-danger btn-sm mr-1"
-          onClick={handleCancel}
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          className="btn btn-outline-primary btn-sm"
-        >
-          Submit
-        </button>
+        </div>
+        <div className="form-group">
+          <button
+            type="button"
+            className="btn btn-outline-danger btn-sm mr-1"
+            onClick={handleCancel}
+          >
+            Cancel
+          </button>
+          <button type="submit" className="btn btn-outline-primary btn-sm">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

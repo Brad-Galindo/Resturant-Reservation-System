@@ -26,22 +26,30 @@ async function list(req, res) {
 // Check if reservation exists
 async function reservationExists(req, res, next) {
   const { reservation_id } = req.params;
-  const reservation = await service.read(reservation_id);
-  if (reservation) {
-    res.locals.reservation = reservation;
-    return next();
+  try {
+    const reservation = await service.read(reservation_id);
+    if (reservation) {
+      res.locals.reservation = reservation;
+      return next();
+    }
+    next({
+      status: 404,
+      message: `Reservation id not found: ${reservation_id}`,
+    });
+  } catch (error) {
+    next({ status: 500, message: error.message });
   }
-  next({
-    status: 404,
-    message: `Reservation id not found: ${reservation_id}`,
-  });
 }
 
 // Read a specific reservation
-async function read(req, res) {
-  const { reservation_id } = req.params;
-  const data = await service.read(reservation_id);
-  res.json({ data });
+async function read(req, res, next) {
+  try {
+    const { reservation_id } = req.params;
+    const data = await service.read(reservation_id);
+    res.json({ data });
+  } catch (error) {
+    next({ status: 500, message: error.message });
+  }
 }
 
 // Create a new reservation
@@ -79,8 +87,10 @@ function validateFields(req, res, next) {
 // Validate 'people' field is a positive number
 function peopleIsNumber(req, res, next) {
   const { people } = req.body.data;
+  
+  
   if (typeof people !== "number" || people <= 0) {
-    return next({ status: 400, message: `people must be a positive number` });
+    return next({ status: 400, message: `people must be a positive number` }, console.log(typeof people, people, "HERE"));
   }
   next();
 }
@@ -310,11 +320,12 @@ async function cancel(req, res, next) {
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [
-    validateFields,
-    peopleIsNumber,
-    validateTime,
-    validateReservationDateTime,
-    validateCreateStatus,
+    asyncErrorBoundary(validateFields),
+    asyncErrorBoundary(peopleIsNumber),
+    asyncErrorBoundary(validateTime),
+    asyncErrorBoundary(validateReservationDateTime),
+    asyncErrorBoundary(validateCreateStatus),
+
     asyncErrorBoundary(create),
   ],
   read: [
@@ -334,10 +345,11 @@ module.exports = {
   search: asyncErrorBoundary(search),
   update: [
     asyncErrorBoundary(reservationExists),
-    validateFields,
-    peopleIsNumber,
-    validateTime,
-    validateReservationDateTime,
+
+    asyncErrorBoundary(validateFields),
+    asyncErrorBoundary(peopleIsNumber),
+    asyncErrorBoundary(validateTime),
+    asyncErrorBoundary(validateReservationDateTime),
     asyncErrorBoundary(update)
   ],
   cancel: asyncErrorBoundary(cancel),

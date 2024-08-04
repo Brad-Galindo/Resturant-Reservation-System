@@ -96,10 +96,6 @@ function SeatReservation() {
 
     return (
       <main>
-        <h1>Seat Reservation</h1>
-        <h3>
-          Reservation ID: {reservation_id} Party Size: {reservation.people}
-        </h3>
         <div>
           <ErrorAlert error={tablesError} />
           <SeatReservationForm
