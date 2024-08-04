@@ -3,8 +3,8 @@
 This full-stack application provides a comprehensive solution for restaurant reservation management. It allows restaurants to create, update, and delete reservations efficiently. The system also includes table management features, ensuring optimal seating arrangements and improved customer service.
 
 ## Live Demo
-- **Frontend:** Hosted at [https://reservation-frontend-v0bx.onrender.com](https://reservation-frontend-v0bx.onrender.com)
-- **Backend:** Hosted at [https://reservation-backend-63rq.onrender.com](https://reservation-backend-63rq.onrender.com)
+- **Frontend:** Hosted at [Frontend](https://reservation-frontend-v0bx.onrender.com)
+- **Backend:** Hosted at [Backend](https://reservation-backend-63rq.onrender.com)
 
 *Note: Render spins down sites when not in use. You may need to visit the backend URL first to activate it, enabling the frontend to make API calls.*
 
@@ -25,6 +25,7 @@ This full-stack application provides a comprehensive solution for restaurant res
 ## Key Features
 
 ### Dashboard (/dashboard)
+![Dashboard](front-end/src/images/Dashboard.png)
 
 - Display reservations for a specific date (default: today)
 - Navigation buttons for date selection (Next, Previous, Today)
@@ -33,27 +34,33 @@ This full-stack application provides a comprehensive solution for restaurant res
 - Real-time status updates for reservations and tables
 
 ### New Reservation (/reservations/new)
+![Dashboard](front-end/src/images/NewReservation.png)
 
 - Comprehensive form for creating new reservations
 - Validation for reservation date and time
 - Error handling for invalid inputs or constraint violations
 
 ### New Table (/tables/new)
+![Dashboard](front-end/src/images/NewTable.png)
 
 - Form for adding new tables
 - Validation for table name and capacity
 
 ### Seat Reservation (/reservations/:reservation_id/seat)
+![Dashboard](front-end/src/images/Seat.png)
+![Dashboard](front-end/src/images/seat2.png)
 
 - Interface for assigning reservations to specific tables
 - Capacity checks to ensure proper seating arrangements
 
 ### Search Functionality (/search)
+![Dashboard](front-end/src/images/Search.png)
 
 - Search reservations by phone number
 - Display all matching reservations regardless of status
 
 ### Edit Reservation (/reservations/:reservation_id/edit)
+![Dashboard](front-end/src/images/edit.png)
 
 - Modify existing reservations (status: "booked" only)
 - Pre-filled form with current reservation details
