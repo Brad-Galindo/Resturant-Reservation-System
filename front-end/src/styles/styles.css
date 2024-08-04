@@ -39,10 +39,10 @@ h1, h2, h4 {
 }
 
 .main-content {
-  margin-left: 320px;
+  margin-left: 100px;
   padding: 20px;
   max-width: 1200px;
-  width: calc(100% - 340px);
+  width: calc(100% - 320px);
   transition: margin-left 0.3s ease;
 }
 
@@ -119,8 +119,7 @@ h1, h2, h4 {
 }
 
 .reservation-form, .seat-reservation-form, .search-reservations, .new-reservation, .new-table, .table-form {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 100%;
   padding: 20px;
   background-color: #1a1a1a !important;
   border-radius: 8px !important;
@@ -149,6 +148,13 @@ h1, h2, h4 {
   margin-right: 10px;
 }
 
+@media (max-width: 1200px) {
+  .main-content {
+    max-width: 100%;
+    width: calc(100% - 320px);
+  }
+}
+
 @media (max-width: 992px) {
   .navbar {
     width: 100%;
@@ -161,6 +167,7 @@ h1, h2, h4 {
     margin-left: 0;
     padding: 15px;
     max-width: 100%;
+    width: 100%;
   }
 
   .btn {
@@ -218,5 +225,45 @@ h1, h2, h4 {
 
   .table tbody {
     font-size: 0.7rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 10px;
+  }
+
+  .reservation-form, .seat-reservation-form, .search-reservations, .new-reservation, .new-table, .table-form {
+    padding: 10px;
+  }
+
+  .table th, .table td {
+    padding: 5px;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar {
+    padding: 10px;
+  }
+
+  .main-content {
+    padding: 10px;
+  }
+
+  .reservation-form, .seat-reservation-form, .search-reservations, .new-reservation, .new-table, .table-form {
+    padding: 10px;
+  }
+
+  .table th, .table td {
+    padding: 5px;
+  }
+
+  .search-form input, .edit-reservation input, .new-reservation input {
+    width: 100%;
+  }
+
+  .search-form, .edit-reservation, .new-reservation {
+    flex-direction: column;
   }
 }

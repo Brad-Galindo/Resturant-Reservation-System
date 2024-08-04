@@ -40,7 +40,7 @@ function NewTable() {
   };
 
   return (
-    <main className="new-table">
+    <main className="new-table main-content">
       <h1>New Table</h1>
       <ErrorAlert error={error} />
       <form onSubmit={handleSubmit}>
